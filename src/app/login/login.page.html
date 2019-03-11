@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+    <ion-button expand="block" fill="clear" routerLink="/email-login">
+      Login with email
+    </ion-button>
+
+  <ion-button (click)="googleLogin()" expand="block" fill="clear">
+    Login with Google
+  </ion-button>
+
+</ion-content>

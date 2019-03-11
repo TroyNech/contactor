@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>email-login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+  <form [formGroup]="loginForm">
+    <ion-item>
+      <ion-label position="stacked">Email</ion-label>
+      <ion-input formControlName="email" type="email" inputmode="email" placeholder="email address" [class.invalid]="!loginForm.controls['email'].valid &&
+            loginForm.controls['email'].touched">
+      </ion-input>
+    </ion-item>
+    <ion-item class="error-message" *ngIf="!loginForm.controls['email'].valid &&
+             loginForm.controls['email'].touched">
+      <ion-label>Please enter a valid email address</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Password</ion-label>
+      <ion-input formControlName="password" type="password" clearOnEdit="false" placeholder="password" [class.invalid]="!loginForm.controls['password'].valid&& loginForm.controls['password'].touched">
+      </ion-input>
+    </ion-item>
+    <ion-item class="error-message" *ngIf="!loginForm.controls['password'].valid
+            && loginForm.controls['password'].touched">
+      <ion-label>Your password needs to be more than 6 characters</ion-label>
+    </ion-item>
+
+    <ion-button (click)="createAccount(loginForm)" expand="block" [disabled]="!loginForm.valid">
+      Create Account
+    </ion-button>
+
+    <ion-button (click)="login(loginForm)" expand="block" [disabled]="!loginForm.valid">
+      Log In
+    </ion-button>
+
+    <ion-button expand="block" fill="clear" (click)="resetPassword(loginForm.value.email)">
+      Reset Password
+    </ion-button>
+  </form>
+  
+</ion-content>
