@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { LoginService } from '../shared/services/user/login/login.service';
-import { UserProfileService } from '../shared/services/user/user-profile/user-profile.service';
+import { LoginService } from '../../shared/services/user/login/login.service';
+import { UserProfileService } from '../../shared/services/user/user-profile/user-profile.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class HomeGuard implements CanActivate {
+export class CreateAccountGuard implements CanActivate {
   constructor(
     private router: Router,
     private loginService: LoginService,
@@ -24,12 +24,12 @@ export class HomeGuard implements CanActivate {
           resolve(false);
         }
 
-        if (!this.userProfileService.userHasProfile()) {
-          console.log('User does not have profile');
-          this.router.navigate(['create-account']);
-          resolve(false);
-        }
-        resolve(true);
+          if (this.userProfileService.userHasProfile()) {
+            console.log('User has profile (tried to access CreateAccountPage)');
+            this.router.navigate(['home']);
+            resolve(false);
+          }
+          resolve(true);
       });
     });
   }

@@ -5,6 +5,7 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-icon name="contact" [routerLink]="['/user-detail']"></ion-icon>
   <ion-button (click)="createCode()">Create Code</ion-button>
   <ion-button (click)="scanCode()">Scan Code</ion-button>
   <qrcode *ngIf="myAngularxQrCode" [qrdata]="myAngularxQrCode" [size]="256" [level]="'M'"></qrcode>

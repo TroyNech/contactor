@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>account-info</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+  <form [formGroup]="contactInfo">
+    <ion-item>
+      <ion-label position="stacked">Email</ion-label>
+      <ion-input formControlName="email">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">First Name</ion-label>
+      <ion-input formControlName="firstName">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Last Name</ion-label>
+      <ion-input formControlName="lastName">
+      </ion-input>
+    </ion-item>
+
+    <div formArrayName="phoneNumbers">
+      <div *ngFor="let phone of contactInfo.controls['phoneNumbers']; let i = index">
+        <form formGroup="{{i}}">
+          <ion-item>
+            <ion-label position="stacked">Phone Type</ion-label>
+            <ion-input formControlName="type"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Phone Number</ion-label>
+            <ion-input type="tel" formControlName="number"></ion-input>
+          </ion-item>
+        </form>
+      </div>
+    </div>
+
+    <ion-icon name="add-circle" (click)="addPhoneForm()" class="ion-float-right"></ion-icon>
+
+    <div formArrayName="websites">
+      <div *ngFor="let website of contactInfo.controls['websites']">
+        <ion-item>
+          <ion-label position="stacked">Website</ion-label>
+          <ion-input type="url"></ion-input>
+        </ion-item>
+      </div>
+    </div>
+
+    <ion-icon name="add-circle" (click)="addWebsiteForm()" class="ion-float-right"></ion-icon>
+
+    <ion-item>
+      <ion-label position="stacked">Organization</ion-label>
+      <ion-input formControlName="organization">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Position</ion-label>
+      <ion-input formControlName="position">
+      </ion-input>
+    </ion-item>
+  </form>
+
+  <ion-button (click)="setUserInfo()" expand="block" [disabled]="!contactInfo.valid">
+    Save
+  </ion-button>
+
+</ion-content>

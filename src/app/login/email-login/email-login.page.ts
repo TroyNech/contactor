@@ -28,7 +28,7 @@ export class EmailLoginPage implements OnInit {
       password: [
         '',
         Validators.compose([Validators.required, Validators.minLength(6)]),
-      ],
+      ]
     });
   }
 

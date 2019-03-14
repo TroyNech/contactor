@@ -6,10 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./create-account.page.scss'],
 })
 export class CreateAccountPage implements OnInit {
-
   constructor() { }
 
-  ngOnInit() {
-  }
-
+  async ngOnInit() { }
+  
 }
