@@ -19,7 +19,7 @@ export class AccountInfoComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router) {
     this.contactInfo = this.formBuilder.group({
-      email: [{ disabled: true }],
+      email: [''],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       phoneNumbers: this.formBuilder.array([]),
@@ -32,7 +32,10 @@ export class AccountInfoComponent implements OnInit {
   async ngOnInit() {
     this.loginService.getUser().then(user => {
       this.contactInfo.get("email").setValue(user.email);
-    })
+    });
+    this.contactInfo.get("email").disable();
+    this.addPhoneForm();
+    this.addWebsiteForm();
   }
 
   addPhoneForm() {
