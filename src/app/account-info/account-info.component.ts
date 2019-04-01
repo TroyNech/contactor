@@ -34,27 +34,57 @@ export class AccountInfoComponent implements OnInit {
       this.contactInfo.get("email").setValue(user.email);
     });
     this.contactInfo.get("email").disable();
-    this.addPhoneForm();
-    this.addWebsiteForm();
+
+    let user = this.userProfileService.getUserProfile();
+    if (user === undefined) {
+      this.addPhoneForm("", "");
+      this.addWebsiteForm("");
+      return;
+    }
+
+    this.addPhoneForm(user['phoneNumbers'][0]['type'], user['phoneNumbers'][0]['number']);
+    for (let i = 1; i < user['phoneNumbers'].length; i++) {
+      this.addPhoneForm(user['phoneNumbers'][i]['type'], user['phoneNumbers'][i]['number']);
+    }
+
+    this.addWebsiteForm(user['websites'][0]);
+    for (let i = 1; i < user['websites'].length; i++) {
+      this.addWebsiteForm(user['websites'][i]);
+    }
+
+    this.contactInfo.controls.firstName.setValue(user['firstName']);
+    this.contactInfo.controls.lastName.setValue(user['lastName']);
+    this.contactInfo.controls.organization.setValue(user['organization']);
+    this.contactInfo.controls.position.setValue(user['position']);
   }
 
-  addPhoneForm() {
+  addPhoneForm(type: String, number: String) {
     let formArray = <FormArray>this.contactInfo.controls['phoneNumbers'];
     formArray.push(
       new FormGroup({
-        type: new FormControl(),
-        number: new FormControl()
+        type: this.formBuilder.control({ value: type, disabled: false }),
+        number: this.formBuilder.control({ value: number, disabled: false })
       })
     );
   }
 
-  addWebsiteForm() {
+  addWebsiteForm(url: String) {
     let formArray = <FormArray>this.contactInfo.controls['websites'];
-    formArray.push(new FormControl());
+    formArray.push(new FormControl(url));
+  }
+
+  removePhoneForm(index: number) {
+    let formArray = <FormArray>this.contactInfo.controls.phoneNumbers;
+    formArray.removeAt(index);
+  }
+
+  removeWebsiteForm(index: number) {
+    let formArray = <FormArray>this.contactInfo.controls['websites'];
+    formArray.removeAt(index);
   }
 
   setUserInfo() {
-    this.userProfileService.setUserProfile(this.contactInfo.getRawValue);
+    this.userProfileService.setUserProfile(this.contactInfo.getRawValue());
     this.router.navigateByUrl('home');
   }
 }

@@ -17,19 +17,20 @@ export class CreateAccountGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     return new Promise((resolve, reject) => {
-      this.loginService.isUserLoggedIn().then(userLoggedIn => {
+      this.loginService.isUserLoggedIn().then(async userLoggedIn => {
         if (!userLoggedIn) {
           console.log('User is not logged in');
           this.router.navigate(['/login']);
           resolve(false);
         }
-
-          if (this.userProfileService.userHasProfile()) {
-            console.log('User has profile (tried to access CreateAccountPage)');
-            this.router.navigate(['home']);
-            resolve(false);
-          }
-          resolve(true);
+        let userHasProfile = await this.userProfileService.userHasProfile();
+        if (userHasProfile) {
+          console.log('User has profile (tried to access CreateAccountPage)');
+          this.router.navigate(['home']);
+          resolve(false);
+        }
+        console.log('user does not have profile');
+        resolve(true);
       });
     });
   }

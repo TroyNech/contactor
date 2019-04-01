@@ -1,73 +1,79 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Account Information</ion-title>
-  </ion-toolbar>
-</ion-header>
+<form [formGroup]="contactInfo">
+  <ion-item>
+    <ion-label position="stacked">Email</ion-label>
+    <ion-input formControlName="email">
+    </ion-input>
+  </ion-item>
 
-<ion-content padding>
+  <ion-item>
+    <ion-label position="stacked">First Name</ion-label>
+    <ion-input formControlName="firstName">
+    </ion-input>
+  </ion-item>
 
-  <form [formGroup]="contactInfo">
-    <ion-item>
-      <ion-label position="stacked">Email</ion-label>
-      <ion-input formControlName="email">
-      </ion-input>
-    </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Last Name</ion-label>
+    <ion-input formControlName="lastName">
+    </ion-input>
+  </ion-item>
 
-    <ion-item>
-      <ion-label position="stacked">First Name</ion-label>
-      <ion-input formControlName="firstName">
-      </ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label position="stacked">Last Name</ion-label>
-      <ion-input formControlName="lastName">
-      </ion-input>
-    </ion-item>
-
-    <div formArrayName="phoneNumbers">
-      <div *ngFor="let phone of contactInfo.controls['phoneNumbers']; let i = index">
-        <form formGroup="{{i}}">
-          <ion-item>
+  <div formArrayName="phoneNumbers">
+    <div *ngFor="let phone of contactInfo.controls['phoneNumbers'].controls; let i = index; let isLast = last">
+      <form formGroupName="{{i}}">
+        <ion-item class="ion-no-padding">
+          <ion-item lines="none">
             <ion-label position="stacked">Phone Type</ion-label>
-            <ion-input formControlName="type"></ion-input>
+            <!-- <ion-input formControlName="type"></ion-input> -->
+            <ion-select formControlName="type">
+              <ion-select-option>Mobile</ion-select-option>
+              <ion-select-option>Work</ion-select-option>
+              <ion-select-option>Home</ion-select-option>
+            </ion-select>
           </ion-item>
-          <ion-item>
+          <ion-item lines="none">
             <ion-label position="stacked">Phone Number</ion-label>
             <ion-input type="tel" formControlName="number"></ion-input>
           </ion-item>
-        </form>
-      </div>
-    </div>
-
-    <ion-icon name="add-circle" (click)="addPhoneForm()" class="ion-float-right"></ion-icon>
-
-    <div formArrayName="websites">
-      <div *ngFor="let website of contactInfo.controls['websites']">
-        <ion-item>
-          <ion-label position="stacked">Website</ion-label>
-          <ion-input type="url"></ion-input>
+          <ion-button *ngIf="!isLast" slot="end" (click)="removePhoneForm(i)" size="small" fill="clear" shape="round"
+          class="ion-no-margin">
+            <ion-icon name="close-circle" color="danger" slot="end"></ion-icon>
+          </ion-button>
+          <ion-button *ngIf="isLast" slot="end" (click)="addPhoneForm()" size="small" fill="clear" shape="round" class="ion-no-margin">
+            <ion-icon name="add-circle" slot="end"></ion-icon>
+          </ion-button>
         </ion-item>
-      </div>
+      </form>
     </div>
+  </div>
 
-    <ion-icon name="add-circle" (click)="addWebsiteForm()" class="ion-float-right"></ion-icon>
+  <div formArrayName="websites">
+    <div *ngFor="let website of contactInfo.controls['websites'].controls; let i = index; let isLast = last">
+      <ion-item>
+        <ion-label position="stacked">Website</ion-label>
+        <ion-input type="url"></ion-input>
+        <ion-button *ngIf="!isLast" (click)="removeWebsiteForm(i)" size="small" fill="clear" shape="round" class="ion-no-margin" slot="end">
+          <ion-icon name="close-circle" color="danger" slot="end"></ion-icon>
+        </ion-button>
+        <ion-button *ngIf="isLast" (click)="addWebsiteForm()" size="small" fill="clear" shape="round" class="ion-no-margin" slot="end">
+          <ion-icon name="add-circle" slot="end"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </div>
+  </div>
 
-    <ion-item>
-      <ion-label position="stacked">Organization</ion-label>
-      <ion-input formControlName="organization">
-      </ion-input>
-    </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Organization</ion-label>
+    <ion-input formControlName="organization">
+    </ion-input>
+  </ion-item>
 
-    <ion-item>
-      <ion-label position="stacked">Position</ion-label>
-      <ion-input formControlName="position">
-      </ion-input>
-    </ion-item>
-  </form>
+  <ion-item>
+    <ion-label position="stacked">Position</ion-label>
+    <ion-input formControlName="position">
+    </ion-input>
+  </ion-item>
+</form>
 
-  <ion-button (click)="setUserInfo()" expand="block" [disabled]="!contactInfo.valid">
-    Save
-  </ion-button>
-
-</ion-content>
+<ion-button (click)="setUserInfo()" expand="block" [disabled]="!contactInfo.valid">
+  Save
+</ion-button>

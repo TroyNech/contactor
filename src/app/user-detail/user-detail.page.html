@@ -5,7 +5,11 @@
 </ion-header>
 
 <ion-content padding>
-
+  <ion-button (click)="logout()" color="danger" expand="block">Log Out</ion-button>
   <app-account-info></app-account-info>
+  <!--   <ion-button routerLink="/home" color="secondary" expand="block">
+    Go Back
+  </ion-button> -->
+  <!-- <ion-back-button defaultHref="/home"></ion-back-button> -->
 
 </ion-content>

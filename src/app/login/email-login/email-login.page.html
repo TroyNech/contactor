@@ -9,7 +9,7 @@
   <form [formGroup]="loginForm">
     <ion-item>
       <ion-label position="stacked">Email</ion-label>
-      <ion-input formControlName="email" type="email" inputmode="email" placeholder="email address" [class.invalid]="!loginForm.controls['email'].valid &&
+      <ion-input formControlName="email" type="email" inputmode="email" [class.invalid]="!loginForm.controls['email'].valid &&
             loginForm.controls['email'].touched">
       </ion-input>
     </ion-item>
@@ -20,7 +20,7 @@
 
     <ion-item>
       <ion-label position="stacked">Password</ion-label>
-      <ion-input formControlName="password" type="password" clearOnEdit="false" placeholder="password" [class.invalid]="!loginForm.controls['password'].valid&& loginForm.controls['password'].touched">
+      <ion-input formControlName="password" type="password" clearOnEdit="false" [class.invalid]="!loginForm.controls['password'].valid&& loginForm.controls['password'].touched">
       </ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="!loginForm.controls['password'].valid
@@ -36,9 +36,9 @@
       Log In
     </ion-button>
 
-    <ion-button expand="block" fill="clear" (click)="resetPassword(loginForm.value.email)">
+    <!-- <ion-button expand="block" fill="clear" (click)="resetPassword(loginForm.value.email)">
       Reset Password
-    </ion-button>
+    </ion-button> -->
   </form>
   
 </ion-content>

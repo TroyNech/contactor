@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 
 import { LoginService } from '../../shared/services/user/login/login.service';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { UserProfileService } from 'src/app/shared/services/user/user-profile/user-profile.service';
 
 @Component({
   selector: 'app-email-login',
@@ -19,6 +20,7 @@ export class EmailLoginPage implements OnInit {
     public loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
     private loginService: LoginService,
+    private userProfileService: UserProfileService,
     private router: Router,
     private formBuilder: FormBuilder,
     public modalController: ModalController) {
@@ -47,7 +49,7 @@ export class EmailLoginPage implements OnInit {
 
       this.loginService.createEmailLogin(email, password).then(
         () => {
-          this.loading.dismiss().then(() => {
+          this.loading.dismiss().then(async () => {
             this.router.navigateByUrl('create-account');
           });
         },

@@ -17,12 +17,28 @@ export class UserProfileService {
       if (user) {
         this.currentUser = user;
         this.userProfileReference = firebase.firestore().doc(`/user/${user.uid}`);
-        firebase.firestore().doc(`/user/${user.uid}`)
-          .onSnapshot(function (doc) {
+        this.userProfileReference
+          .onSnapshot((doc) => {
             this.userData = doc;
           });
       }
     });
+  }
+
+  async loadUserProfile(): Promise<Boolean> {
+    if (this.userProfileReference === undefined) {
+      console.log("User does not have profile");
+      return false;
+    }
+
+    try {
+      this.userData = await this.userProfileReference.get();
+    }
+    catch (e) {
+      console.log("User does not have profile");
+      return false;
+    }
+    return true;
   }
 
   getUserProfile(): Object {
@@ -34,19 +50,33 @@ export class UserProfileService {
     return this.userData.data();
   }
 
-  userHasProfile(): Boolean {
-    return this.userData !== undefined;
+  userHasProfile(): Promise<Boolean> {
+    if (this.userData === undefined) {
+      return this.loadUserProfile();
+    }
+
+    return Promise.resolve(true);
   }
 
   setUserProfile(userInfo: Object) {
-    this.userProfileReference.set(userInfo)
-    .catch(e => {
-      console.log("Error setting user profile: " + e);
-    });
-  }
+    //remove any extra empty phone numbers and websites (need at least 1, regardless of value)
+    for (let i = 1; i < userInfo['phoneNumbers'].length; i++) {
+      if (userInfo['phoneNumbers'][i].number === null || userInfo['phoneNumbers'][i].number === "") {
+        userInfo['phoneNumbers'].pop(i);
+      }
+    }
+    for (let i = 1; i < userInfo['websites'].length; i++) {
+      if (userInfo['websites'][i] === null || userInfo['websites'][i] === "") {
+        userInfo['websites'].pop(i);
+      }
+    }
 
-  setName(firstName: string, lastName: string): Promise<any> {
-    return this.userProfileReference.update({ firstName, lastName });
+    console.log(userInfo);
+
+    this.userProfileReference.set(userInfo)
+      .catch(e => {
+        console.log("Error setting user profile: " + e);
+      });
   }
 
   async setEmail(newEmail: string, password: string): Promise<any> {

@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+import { Router } from '@angular/router';
+import { routerNgProbeToken } from '@angular/router/src/router_module';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +12,7 @@ export class HomePage {
   scannedData: Object;
   public myAngularxQrCode: string;
 
-  constructor(private barcodeScanner: BarcodeScanner) { }
+  constructor(private barcodeScanner: BarcodeScanner, private router: Router) { }
 
   createCode() {
     let data = { "email": "nech5860@mylaurier.ca", "id": 150405860 };
@@ -24,5 +26,9 @@ export class HomePage {
     }).catch(err => {
       console.log('Error', err);
     });
+  }
+
+  goToUserDetail() {
+    this.router.navigateByUrl('user-detail');
   }
 }

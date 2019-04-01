@@ -7,20 +7,12 @@ import { IonicModule } from '@ionic/angular';
 
 import { AccountInfoComponent } from './account-info.component';
 
-const routes: Routes = [
-  {
-    path: '',
-    component: AccountInfoComponent
-  }
-];
-
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    IonicModule,
-    RouterModule.forChild(routes)
+    IonicModule
   ],
   declarations: [AccountInfoComponent],
   exports: [AccountInfoComponent]
