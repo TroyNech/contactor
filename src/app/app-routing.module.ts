@@ -10,7 +10,8 @@ const routes: Routes = [
   { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
   { path: 'email-login', loadChildren: './login/email-login/email-login.module#EmailLoginPageModule' },
   { path: 'create-account', loadChildren: './account-info/create-account/create-account.module#CreateAccountPageModule', canActivate: [CreateAccountGuard] },
-  { path: 'user-detail', loadChildren: './user-detail/user-detail.module#UserDetailPageModule', canActivate: [HomeGuard] }
+  { path: 'user-detail', loadChildren: './user-detail/user-detail.module#UserDetailPageModule', canActivate: [HomeGuard] },
+  { path: 'contact-list', loadChildren: './contact-list/contact-list/contact-list.module#ContactListPageModule' }
 ];
 
 @NgModule({

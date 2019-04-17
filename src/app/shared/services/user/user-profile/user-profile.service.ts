@@ -9,30 +9,41 @@ import 'firebase/firestore';
 })
 export class UserProfileService {
   public userData: firebase.firestore.DocumentSnapshot;
-  public userProfileReference: firebase.firestore.DocumentReference;
+  public contactsData: Map<Number, Object>;
+  public userDataReference: firebase.firestore.DocumentReference;
+  public userContactsReference: firebase.firestore.CollectionReference;
   public currentUser: firebase.User;
 
   constructor() {
+    this.contactsData = new Map();
+
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.currentUser = user;
-        this.userProfileReference = firebase.firestore().doc(`/user/${user.uid}`);
-        this.userProfileReference
+        this.userDataReference = firebase.firestore().doc(`/user/${user.uid}/userData`);
+        this.userDataReference
           .onSnapshot((doc) => {
             this.userData = doc;
+          });
+        this.userContactsReference = firebase.firestore().collection(`/user/${user.uid}/contacts`);
+        this.userContactsReference
+          .onSnapshot((querySnapshot) => {
+            querySnapshot.forEach(function (doc) {
+              this.contactsData.set(doc.id, doc.data());
+            });
           });
       }
     });
   }
 
   async loadUserProfile(): Promise<Boolean> {
-    if (this.userProfileReference === undefined) {
+    if (this.userDataReference === undefined) {
       console.log("User does not have profile");
       return false;
     }
 
     try {
-      this.userData = await this.userProfileReference.get();
+      this.userData = await this.userDataReference.get();
     }
     catch (e) {
       console.log("User does not have profile");
@@ -73,7 +84,7 @@ export class UserProfileService {
 
     console.log(userInfo);
 
-    this.userProfileReference.set(userInfo)
+    this.userDataReference.set(userInfo)
       .catch(e => {
         console.log("Error setting user profile: " + e);
       });
@@ -89,7 +100,7 @@ export class UserProfileService {
       await this.currentUser
         .reauthenticateAndRetrieveDataWithCredential(credential);
       this.currentUser.updateEmail(newEmail).then(() => {
-        this.userProfileReference.update({ email: newEmail });
+        this.userDataReference.update({ email: newEmail });
       });
     }
     catch (error) {
