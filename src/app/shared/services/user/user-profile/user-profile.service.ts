@@ -28,7 +28,7 @@ export class UserProfileService {
         this.userContactsReference = firebase.firestore().collection(`/app/user/${user.uid}/contacts/contacts`);
         this.userContactsReference
           .onSnapshot((querySnapshot) => {
-            querySnapshot.forEach(function (doc) {
+            querySnapshot.forEach((doc) => {
               this.contactsData.set(doc.id, doc.data());
             });
           });
@@ -133,19 +133,21 @@ export class UserProfileService {
   }
 
   setContact(contact: Object) {
-    this.sanitizeContactData(contact);
+    contact = this.sanitizeContactData(contact);
+    console.log(contact);
     this.cleanContactData(contact);
 
     if (this.isEmpty(contact['firstName']) || this.isEmpty(contact['lastName'])) {
       throw "Contact has no name: " + JSON.stringify(contact);
     }
 
-    if (contact['id'] === null || contact['id'] === "") {
+    if (this.isEmpty(contact['id'])) {
       this.userContactsReference.add(contact).catch(e => {
         console.log("Error setting contact: " + e);
       });
     } else {
       //else, update existing contact
+      console.log('hi');
       this.userContactsReference.doc(contact['id']).set(contact)
         .catch(e => {
           console.log("Error setting contact: " + e);
@@ -153,7 +155,7 @@ export class UserProfileService {
     }
   }
 
-  private sanitizeContactData(contact: Object) {
+  private sanitizeContactData(contact: Object): Object {
     var cleanedContact: Object = {};
 
     cleanedContact['firstName'] = (contact['firstName'] === undefined) ? "" : contact['firstName'];
@@ -161,9 +163,9 @@ export class UserProfileService {
     cleanedContact['organization'] = (contact['organization'] === undefined) ? "" : contact['organization'];
     cleanedContact['phoneNumbers'] = (contact['phoneNumbers'] === undefined) ? [] : contact['phoneNumebers'];
     cleanedContact['websites'] = (contact['websites'] === undefined) ? [] : contact['websites'];
-    cleanedContact['position'] = (contact['position'] === undefined) ? undefined : contact['position'];
+    cleanedContact['position'] = (contact['position'] === undefined) ? "" : contact['position'];
 
-    contact = cleanedContact;
+    return cleanedContact;
   }
 
   private isEmpty(str: String) {

@@ -6,17 +6,14 @@
 
 <ion-content padding>
   <ion-item-group>
-    <div *ngFor="let contact of contacts.entries(); let i = index; let isFirst = first">
-      <!-- <div *ngIf="isFirst || contact[1]['firstName'].charAt(0) != contacts.values.[i-1]['firstName'].charAt(0)">
+    <div *ngFor="let contact of contactsArray; let i = index; let isFirst = first">
+      <div *ngIf="isFirst || contact[1]['firstName'].charAt(0) != contactsArray[i-1][1]['firstName'].charAt(0)">
         <ion-item-divider>
-          <ion-label>{{contact['firstName'].charAt(0)}}</ion-label>
+          <ion-label>{{contact[1]['firstName'].charAt(0)}}</ion-label>
         </ion-item-divider>
       </div>
       <ion-item [routerLink]="['/contact-detail', contact[0]]">
         <ion-label>{{contact[1]['firstName']}} {{contact[1]['lastName']}}</ion-label>
-      </ion-item> -->
-      <ion-item>
-        <ion-label>{{contact}}</ion-label>
       </ion-item>
     </div>
   </ion-item-group>

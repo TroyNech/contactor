@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
 import { UserProfileService } from '../shared/services/user/user-profile/user-profile.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-contact-list',
@@ -9,12 +8,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./contact-list.page.scss'],
 })
 export class ContactListPage implements OnInit {
-  contacts: Map<String, Object>;
+  contactsArray: [String, Object][];
 
-  constructor(private userProfileService: UserProfileService, private router: Router,) { }
+  constructor(private userProfileService: UserProfileService) { }
 
   ngOnInit() {
-    this.contacts = this.userProfileService.getContacts();
-    console.log(this.contacts);
+    let contacts = this.userProfileService.getContacts();
+    this.contactsArray = Array.from(contacts);
   }
 }

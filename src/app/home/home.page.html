@@ -15,9 +15,9 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-icon name="list" [routerLink]="['/contact-list']"></ion-icon>
-  <ion-icon name="contact" (click)="goToUserDetail()"></ion-icon>
-  <ion-button (click)="toggleQrCode()">Create Code</ion-button>
-  <ion-button (click)="scanCode()">Scan Code</ion-button>
+ <!--  <ion-icon name="list" [routerLink]="['/contact-list']"></ion-icon>
+  <ion-icon name="contact" (click)="goToUserDetail()"></ion-icon> -->
+  <ion-button expand="block" (click)="toggleQrCode()">Create Code</ion-button>
+  <ion-button expand="block" (click)="scanCode()">Scan Code</ion-button>
   <qrcode *ngIf="qrCodeToggle" [qrdata]="myAngularxQrCode" [size]="256" [level]="'M'"></qrcode>
 </ion-content>

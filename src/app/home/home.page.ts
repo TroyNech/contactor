@@ -36,7 +36,7 @@ export class HomePage {
       this.userProfileService.setContact(scannedData);
     }).then(async () => {
       const toast = await this.toastController.create({
-        message: 'Contact ' + scannedData['firstName'] + scannedData['lastName'],
+        message: 'Contact ' + scannedData['firstName'] + ' ' + scannedData['lastName'] + ' added',
         duration: 2000,
       });
       toast.present();
