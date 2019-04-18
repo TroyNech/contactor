@@ -9,7 +9,7 @@ import 'firebase/firestore';
 })
 export class UserProfileService {
   public userData: firebase.firestore.DocumentSnapshot;
-  public contactsData: Map<Number, Object>;
+  public contactsData: Map<string, Object>;
   public userDataReference: firebase.firestore.DocumentReference;
   public userContactsReference: firebase.firestore.CollectionReference;
   public currentUser: firebase.User;
@@ -20,12 +20,12 @@ export class UserProfileService {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.currentUser = user;
-        this.userDataReference = firebase.firestore().doc(`/user/${user.uid}/userData`);
+        this.userDataReference = firebase.firestore().doc(`/app/user/${user.uid}/contactInfo`);
         this.userDataReference
           .onSnapshot((doc) => {
             this.userData = doc;
           });
-        this.userContactsReference = firebase.firestore().collection(`/user/${user.uid}/contacts`);
+        this.userContactsReference = firebase.firestore().collection(`/app/user/${user.uid}/contacts/contacts`);
         this.userContactsReference
           .onSnapshot((querySnapshot) => {
             querySnapshot.forEach(function (doc) {
@@ -61,15 +61,27 @@ export class UserProfileService {
     return this.userData.data();
   }
 
-  userHasProfile(): Promise<Boolean> {
+  async userHasProfile(): Promise<Boolean> {
     if (this.userData === undefined) {
-      return this.loadUserProfile();
+      let userProfileLoaded = await this.loadUserProfile();
+      if (userProfileLoaded) {
+        return Promise.resolve(!this.isEmpty(this.userData['firstName']));
+      }
+    } else {
+      return Promise.resolve(!this.isEmpty(this.userData['firstName']));
     }
-
-    return Promise.resolve(true);
   }
 
   setUserProfile(userInfo: Object) {
+    this.cleanContactData(userInfo);
+
+    this.userDataReference.set(userInfo)
+      .catch(e => {
+        console.log("Error setting user profile: " + e);
+      });
+  }
+
+  private cleanContactData(userInfo: Object) {
     //remove any extra empty phone numbers and websites (need at least 1, regardless of value)
     for (let i = 1; i < userInfo['phoneNumbers'].length; i++) {
       if (userInfo['phoneNumbers'][i].number === null || userInfo['phoneNumbers'][i].number === "") {
@@ -81,13 +93,6 @@ export class UserProfileService {
         userInfo['websites'].pop(i);
       }
     }
-
-    console.log(userInfo);
-
-    this.userDataReference.set(userInfo)
-      .catch(e => {
-        console.log("Error setting user profile: " + e);
-      });
   }
 
   async setEmail(newEmail: string, password: string): Promise<any> {
@@ -125,4 +130,74 @@ export class UserProfileService {
       console.error(error);
     }
   }
+
+  setContact(contact: Object) {
+    this.sanitizeContactData(contact);
+    this.cleanContactData(contact);
+
+    if (this.isEmpty(contact['firstName']) || this.isEmpty(contact['lastName'])) {
+      throw "Contact has no name: " + JSON.stringify(contact);
+    }
+
+    if (contact['id'] === null || contact['id'] === "") {
+      this.userContactsReference.add(contact).catch(e => {
+        console.log("Error setting contact: " + e);
+      });
+    } else {
+      //else, update existing contact
+      this.userContactsReference.doc(contact['id']).set(contact)
+        .catch(e => {
+          console.log("Error setting contact: " + e);
+        });
+    }
+  }
+
+  private sanitizeContactData(contact: Object) {
+    var cleanedContact: Object = {};
+
+    try {
+      cleanedContact['firstName'] = contact['firstName'];
+      cleanedContact['lastName'] = contact['lastName'];
+      cleanedContact['organization'] = contact['organization'];
+      cleanedContact['phoneNumbers'] = contact['phoneNumbers'];
+      cleanedContact['websites'] = contact['websites'];
+      cleanedContact['position'] = contact['position'];
+    } finally {
+      contact = cleanedContact;
+    }
+  }
+
+  private isEmpty(str: String) {
+    return (str === undefined || str === null || str === "");
+  }
+
+  deleteContact(contactId: string) {
+    this.userContactsReference.doc(contactId).delete()
+      .catch(e => {
+        console.log("Error deleting contact: " + e);
+      });;
+  }
+
+  getContacts(): Map<string, Object> {
+    //returning contactsData is valid in this case since it will be an empty map,
+    // but want to keep the behaviour of error if user not logged in (like getUser)
+    if (this.currentUser === undefined || this.userData === undefined) {
+      console.log("Error getting user document: User not logged in or no profile avaiable");
+      return undefined;
+    }
+
+    return this.contactsData;
+  }
+
+  getContact(contactId): Array<Object> {
+    //returning contactsData is valid in this case since it will be an empty map,
+    // but want to keep the behaviour of error if user not logged in (like getUser)
+    if (this.currentUser === undefined || this.userData === undefined) {
+      console.log("Error getting user document: User not logged in or no profile avaiable");
+      return undefined;
+    }
+
+    return [contactId, this.contactsData.get(contactId)];
+  }
+
 }

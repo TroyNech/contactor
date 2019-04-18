@@ -36,7 +36,7 @@ export class LoginService {
       .then((newUserCredential: firebase.auth.UserCredential) => {
         firebase
           .firestore()
-          .doc(`/user/${newUserCredential.user.uid}`)
+          .doc(`/app/user/${newUserCredential.user.uid}/contactInfo`)
           .set({ email: email });
       })
       .catch(error => {

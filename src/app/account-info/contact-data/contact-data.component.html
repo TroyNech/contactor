@@ -1,0 +1,82 @@
+<form [formGroup]="contactInfo">
+  <ion-item>
+    <ion-label position="stacked">Email</ion-label>
+    <ion-input formControlName="email">
+    </ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">First Name</ion-label>
+    <ion-input formControlName="firstName">
+    </ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Last Name</ion-label>
+    <ion-input formControlName="lastName">
+    </ion-input>
+  </ion-item>
+
+  <div formArrayName="phoneNumbers">
+    <div *ngFor="let phone of contactInfo.controls['phoneNumbers'].controls; let i = index; let isLast = last">
+      <form formGroupName="{{i}}">
+        <ion-item class="ion-no-padding">
+          <ion-item lines="none">
+            <ion-label position="stacked">Phone Type</ion-label>
+            <!-- <ion-input formControlName="type"></ion-input> -->
+            <ion-select formControlName="type">
+              <ion-select-option>Mobile</ion-select-option>
+              <ion-select-option>Work</ion-select-option>
+              <ion-select-option>Home</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-label position="stacked">Phone Number</ion-label>
+            <ion-input type="tel" formControlName="number"></ion-input>
+          </ion-item>
+          <ion-button *ngIf="!isLast" slot="end" (click)="removePhoneForm(i)" size="small" fill="clear" shape="round"
+            class="ion-no-margin">
+            <ion-icon name="close-circle" color="danger" slot="end"></ion-icon>
+          </ion-button>
+          <ion-button *ngIf="isLast" slot="end" (click)="addPhoneForm()" size="small" fill="clear" shape="round"
+            class="ion-no-margin">
+            <ion-icon name="add-circle" slot="end"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </form>
+    </div>
+  </div>
+
+  <div formArrayName="websites">
+    <div *ngFor="let website of contactInfo.controls['websites'].controls; let i = index; let isLast = last">
+      <ion-item>
+        <ion-label position="stacked">Website</ion-label>
+        <ion-input type="url"></ion-input>
+        <ion-button *ngIf="!isLast" (click)="removeWebsiteForm(i)" size="small" fill="clear" shape="round"
+          class="ion-no-margin" slot="end">
+          <ion-icon name="close-circle" color="danger" slot="end"></ion-icon>
+        </ion-button>
+        <ion-button *ngIf="isLast" (click)="addWebsiteForm()" size="small" fill="clear" shape="round"
+          class="ion-no-margin" slot="end">
+          <ion-icon name="add-circle" slot="end"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </div>
+  </div>
+
+  <ion-item>
+    <ion-label position="stacked">Organization</ion-label>
+    <ion-input formControlName="organization">
+    </ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Position</ion-label>
+    <ion-input formControlName="position">
+    </ion-input>
+  </ion-item>
+</form>
+
+<ion-button (click)="setData()" expand="block" [disabled]="!contactInfo.valid">
+  Save
+</ion-button>

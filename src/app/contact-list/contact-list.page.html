@@ -6,26 +6,15 @@
 
 <ion-content padding>
   <ion-item-group>
-    <ion-item-divider>
-      <ion-label>A</ion-label>
-    </ion-item-divider>
-
-    <ion-item>
-      <ion-label>Angola</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>Argentina</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>Armenia</ion-label>
-    </ion-item>
+    <div *ngFor="let contact of contacts; let i = index; let isFirst = first">
+      <div *ngIf="isFirst || contact[1]['firstName'].charAt(0) != contacts.values.[i-1]['firstName'].charAt(0)">
+        <ion-item-divider>
+          <ion-label>{{contact['firstName'].charAt(0)}}</ion-label>
+        </ion-item-divider>
+      </div>
+      <ion-item [routerLink]="['/contact-detail', contact[0]]">
+        <ion-label>{{contact[1]['firstName']}} {{contact[1]['lastName']}}</ion-label>
+      </ion-item>
+    </div>
   </ion-item-group>
-
-  <ion-item-group>
-    <ion-item-divider>
-      <ion-label>B</ion-label>
-    </ion-item-divider>
-  </ion-item-group>
-
-
 </ion-content>

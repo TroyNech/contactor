@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { Router } from '@angular/router';
-import { routerNgProbeToken } from '@angular/router/src/router_module';
+
+import { UserProfileService } from '../shared/services/user/user-profile/user-profile.service';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -9,23 +11,34 @@ import { routerNgProbeToken } from '@angular/router/src/router_module';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  scannedData: Object;
   public myAngularxQrCode: string;
 
-  constructor(private barcodeScanner: BarcodeScanner, private router: Router) { }
+  constructor(
+    private barcodeScanner: BarcodeScanner,
+    private router: Router,
+    private userProfileService: UserProfileService,
+    private toastController: ToastController) { }
 
   createCode() {
-    let data = { "email": "nech5860@mylaurier.ca", "id": 150405860 };
-    this.myAngularxQrCode = JSON.stringify(data);
+    let userData = this.userProfileService.getUserProfile();
+    this.myAngularxQrCode = JSON.stringify(userData);
   }
 
   scanCode() {
-    console.log("scanning...");
+    let scannedData: Object;
     this.barcodeScanner.scan().then(barcodeData => {
-      this.scannedData = JSON.stringify(JSON.parse(barcodeData.text));
-    }).catch(err => {
-      console.log('Error', err);
-    });
+      scannedData = JSON.parse(barcodeData.text);
+      this.userProfileService.setContact(scannedData);
+    }).then(async () => {
+        const toast = await this.toastController.create({
+          message: 'Contact ' + scannedData['firstName'] + scannedData['lastName'],
+          duration: 2000,
+        });
+        toast.present();
+    })
+      .catch(err => {
+        console.log('Error scanning code', err);
+      });
   }
 
   goToUserDetail() {
