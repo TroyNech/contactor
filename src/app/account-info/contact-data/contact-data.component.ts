@@ -107,8 +107,6 @@ export class ContactDataComponent implements OnInit {
   }
 
   setData() {
-    console.log(this.contactInfo.controls['websites']);
-    console.log(this.contactInfo.getRawValue());
     this.dataToSet.emit(this.contactInfo.getRawValue());
   }
 }

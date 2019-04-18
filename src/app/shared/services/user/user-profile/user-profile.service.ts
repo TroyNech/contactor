@@ -64,17 +64,22 @@ export class UserProfileService {
   async userHasProfile(): Promise<Boolean> {
     if (this.userData === undefined) {
       let userProfileLoaded = await this.loadUserProfile();
-      if (userProfileLoaded) {
-        return Promise.resolve(!this.isEmpty(this.userData.data()['firstName']));
+      if (userProfileLoaded && this.userData !== undefined) {
+        return Promise.resolve(this.userData.data()['firstName'] !== undefined);
       }
       return Promise.resolve(false);
     } else {
-      return Promise.resolve(!this.isEmpty(this.userData.data()['firstName']));
+      return Promise.resolve(this.userData.data()['firstName'] !== undefined);
     }
   }
 
   setUserProfile(userInfo: Object) {
+    console.log(userInfo);
+    userInfo = this.sanitizeContactData(userInfo);
     this.cleanContactData(userInfo);
+
+    console.log('settingUserData');
+    console.log(userInfo);
 
     this.userDataReference.set(userInfo)
       .catch(e => {
@@ -133,11 +138,11 @@ export class UserProfileService {
   }
 
   setContact(contact: Object, id: String = null) {
-   // console.log('hi1');
-   // console.log(contact);
+    console.log('hi1');
+    console.log(contact);
     contact = this.sanitizeContactData(contact);
-   // console.log('hi2');
-   // console.log(contact);
+    console.log('hi2');
+    console.log(contact);
     this.cleanContactData(contact);
 
     if (this.isEmpty(contact['firstName']) || this.isEmpty(contact['lastName'])) {
