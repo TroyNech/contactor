@@ -6,7 +6,6 @@
 
 <ion-content padding>
   <ion-button (click)="deleteContact()" color="danger" expand="block">Delete</ion-button>
-  <app-account-info></app-account-info>
-  <app-contact-info [contactData]="contactData[1]" [disableEmail]="false" (dataToSet)="setContactInfo($data)">
-  </app-contact-info>
+  <app-contact-data [contactData]="contactData[1]" [disableEmail]="false" (dataToSet)="setContactInfo($data)">
+  </app-contact-data>
 </ion-content>

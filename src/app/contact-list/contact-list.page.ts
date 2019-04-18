@@ -15,5 +15,6 @@ export class ContactListPage implements OnInit {
 
   ngOnInit() {
     this.contacts = this.userProfileService.getContacts();
+    console.log(this.contacts);
   }
 }

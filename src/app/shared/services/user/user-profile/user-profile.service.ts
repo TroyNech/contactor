@@ -65,10 +65,11 @@ export class UserProfileService {
     if (this.userData === undefined) {
       let userProfileLoaded = await this.loadUserProfile();
       if (userProfileLoaded) {
-        return Promise.resolve(!this.isEmpty(this.userData['firstName']));
+        return Promise.resolve(!this.isEmpty(this.userData.data()['firstName']));
       }
+      return Promise.resolve(false);
     } else {
-      return Promise.resolve(!this.isEmpty(this.userData['firstName']));
+      return Promise.resolve(!this.isEmpty(this.userData.data()['firstName']));
     }
   }
 
@@ -155,16 +156,14 @@ export class UserProfileService {
   private sanitizeContactData(contact: Object) {
     var cleanedContact: Object = {};
 
-    try {
-      cleanedContact['firstName'] = contact['firstName'];
-      cleanedContact['lastName'] = contact['lastName'];
-      cleanedContact['organization'] = contact['organization'];
-      cleanedContact['phoneNumbers'] = contact['phoneNumbers'];
-      cleanedContact['websites'] = contact['websites'];
-      cleanedContact['position'] = contact['position'];
-    } finally {
-      contact = cleanedContact;
-    }
+    cleanedContact['firstName'] = (contact['firstName'] === undefined) ? "" : contact['firstName'];
+    cleanedContact['lastName'] = (contact['lastName'] === undefined) ? "" : contact['lastName'];
+    cleanedContact['organization'] = (contact['organization'] === undefined) ? "" : contact['organization'];
+    cleanedContact['phoneNumbers'] = (contact['phoneNumbers'] === undefined) ? [] : contact['phoneNumebers'];
+    cleanedContact['websites'] = (contact['websites'] === undefined) ? [] : contact['websites'];
+    cleanedContact['position'] = (contact['position'] === undefined) ? undefined : contact['position'];
+
+    contact = cleanedContact;
   }
 
   private isEmpty(str: String) {

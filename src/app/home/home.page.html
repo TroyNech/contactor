@@ -1,13 +1,13 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button>
-        <ion-icon [routerLink]="['contact-list']" slot="icon-only" name="list"></ion-icon>
+      <ion-button [routerLink]="['/contact-list']">
+        <ion-icon slot="icon-only" name="list"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button>
-        <ion-icon (click)="goToUserDetail()" slot="icon-only" name="contact"></ion-icon>
+      <ion-button (click)="goToUserDetail()">
+        <ion-icon slot="icon-only" name="contact"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title>Home</ion-title>
@@ -15,9 +15,9 @@
 </ion-header>
 
 <ion-content padding>
-  <!-- <ion-icon name="contact" [routerLink]="['/user-detail']"></ion-icon> -->
-  <!-- <ion-icon name="contact" (click)="goToUserDetail()"></ion-icon> -->
-  <ion-button (click)="createCode()">Create Code</ion-button>
+  <ion-icon name="list" [routerLink]="['/contact-list']"></ion-icon>
+  <ion-icon name="contact" (click)="goToUserDetail()"></ion-icon>
+  <ion-button (click)="toggleQrCode()">Create Code</ion-button>
   <ion-button (click)="scanCode()">Scan Code</ion-button>
-  <qrcode *ngIf="myAngularxQrCode" [qrdata]="myAngularxQrCode" [size]="256" [level]="'M'"></qrcode>
+  <qrcode *ngIf="qrCodeToggle" [qrdata]="myAngularxQrCode" [size]="256" [level]="'M'"></qrcode>
 </ion-content>

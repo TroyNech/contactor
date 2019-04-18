@@ -25,6 +25,7 @@ export class ContactDataComponent implements OnInit {
   }
 
   async ngOnInit() {
+  //  console.log(this.contactData);
     this.contactInfo.get("email").setValue(this.contactData['email']);
     if (this.disableEmail) {
       this.contactInfo.get("email").disable();
@@ -79,8 +80,6 @@ export class ContactDataComponent implements OnInit {
   }
 
   setData() {
-    //this.userProfileService.setUserProfile(this.contactInfo.getRawValue());
-    //this.router.navigateByUrl('home');
     this.dataToSet.emit(this.contactInfo.getRawValue());
   }
 }
