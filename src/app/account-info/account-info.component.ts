@@ -21,7 +21,7 @@ export class AccountInfoComponent implements OnInit {
   }
 
   setUserInfo(data: Object) {
-    console.log(data);
+    //console.log(data);
     this.userProfileService.setUserProfile(data);
     this.router.navigateByUrl('home');
   }

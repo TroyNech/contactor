@@ -25,19 +25,46 @@ export class ContactDataComponent implements OnInit {
   }
 
   async ngOnInit() {
-  //  console.log(this.contactData);
-    this.contactInfo.get("email").setValue(this.contactData['email']);
+   // console.log(this.contactData);
+
     if (this.disableEmail) {
       this.contactInfo.get("email").disable();
     }
 
+    try {
+      this.contactInfo.get("email").setValue(this.contactData['email']);
+      this.contactInfo.controls.firstName.setValue(this.contactData['firstName']);
+      this.contactInfo.controls.lastName.setValue(this.contactData['lastName']);
+      this.contactInfo.controls.organization.setValue(this.contactData['organization']);
+      this.contactInfo.controls.position.setValue(this.contactData['position']);
+    } catch (e) { }
+
+    if (this.contactData['phoneNumbers'] !== undefined && this.contactData['phoneNumbers'][0] !== undefined) {
+      this.addPhoneForm(this.contactData['phoneNumbers'][0]['type'], this.contactData['phoneNumbers'][0]['number']);
+      for (let i = 1; i < this.contactData['phoneNumbers'].length; i++) {
+        this.addPhoneForm(this.contactData['phoneNumbers'][i]['type'], this.contactData['phoneNumbers'][i]['number']);
+      }
+    } else {
+      this.addPhoneForm("", "");
+    }
+
+    if (this.contactData['websites'] !== undefined && this.contactData['websites'][0] !== undefined) {
+      this.addWebsiteForm(this.contactData['websites'][0]);
+      for (let i = 1; i < this.contactData['websites'].length; i++) {
+        this.addWebsiteForm(this.contactData['websites'][i]);
+      }
+    } else {
+      this.addWebsiteForm("");
+    }
+
+    /*
     //new user who does not have any data other then email
     if (this.contactData['phoneNumbers'] === undefined) {
       this.addPhoneForm("", "");
       this.addWebsiteForm("");
       return;
     }
-
+    
     this.addPhoneForm(this.contactData['phoneNumbers'][0]['type'], this.contactData['phoneNumbers'][0]['number']);
     for (let i = 1; i < this.contactData['phoneNumbers'].length; i++) {
       this.addPhoneForm(this.contactData['phoneNumbers'][i]['type'], this.contactData['phoneNumbers'][i]['number']);
@@ -48,10 +75,10 @@ export class ContactDataComponent implements OnInit {
       this.addWebsiteForm(this.contactData['websites'][i]);
     }
 
-    this.contactInfo.controls.firstName.setValue(this.contactData['firstName']);
+     this.contactInfo.controls.firstName.setValue(this.contactData['firstName']);
     this.contactInfo.controls.lastName.setValue(this.contactData['lastName']);
     this.contactInfo.controls.organization.setValue(this.contactData['organization']);
-    this.contactInfo.controls.position.setValue(this.contactData['position']);
+    this.contactInfo.controls.position.setValue(this.contactData['position']); */
   }
 
   addPhoneForm(type: String, number: String) {
@@ -80,6 +107,8 @@ export class ContactDataComponent implements OnInit {
   }
 
   setData() {
+    console.log(this.contactInfo.controls['websites']);
+    console.log(this.contactInfo.getRawValue());
     this.dataToSet.emit(this.contactInfo.getRawValue());
   }
 }

@@ -26,12 +26,16 @@ export class HomePage {
 
   toggleQrCode() {
     this.qrCodeToggle = !this.qrCodeToggle;
+    if (this.qrCodeToggle) {
+      let userData = this.userProfileService.getUserProfile();
+      this.myAngularxQrCode = JSON.stringify(userData);
+    }
   }
 
   scanCode() {
     let scannedData: Object;
     this.barcodeScanner.scan().then(barcodeData => {
-      console.log(barcodeData.text);
+      // console.log(barcodeData.text);
       scannedData = JSON.parse(barcodeData.text);
       this.userProfileService.setContact(scannedData);
     }).then(async () => {

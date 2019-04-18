@@ -15,5 +15,9 @@ export class ContactListPage implements OnInit {
   ngOnInit() {
     let contacts = this.userProfileService.getContacts();
     this.contactsArray = Array.from(contacts);
+
+    this.contactsArray.sort((a, b) => {
+      return (a[1]['firstName'] + ' ' + a[1]['lastName']).localeCompare((b[1]['firstName'] + ' ' + b[1]['lastName']));
+    });
   }
 }

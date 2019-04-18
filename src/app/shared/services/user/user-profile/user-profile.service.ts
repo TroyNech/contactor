@@ -132,23 +132,26 @@ export class UserProfileService {
     }
   }
 
-  setContact(contact: Object) {
+  setContact(contact: Object, id: String = null) {
+   // console.log('hi1');
+   // console.log(contact);
     contact = this.sanitizeContactData(contact);
-    console.log(contact);
+   // console.log('hi2');
+   // console.log(contact);
     this.cleanContactData(contact);
 
     if (this.isEmpty(contact['firstName']) || this.isEmpty(contact['lastName'])) {
       throw "Contact has no name: " + JSON.stringify(contact);
     }
 
-    if (this.isEmpty(contact['id'])) {
+    if (id === null) {
       this.userContactsReference.add(contact).catch(e => {
         console.log("Error setting contact: " + e);
       });
     } else {
       //else, update existing contact
-      console.log('hi');
-      this.userContactsReference.doc(contact['id']).set(contact)
+     // console.log('hi');
+      this.userContactsReference.doc(<string>id).set(contact)
         .catch(e => {
           console.log("Error setting contact: " + e);
         });
@@ -161,9 +164,10 @@ export class UserProfileService {
     cleanedContact['firstName'] = (contact['firstName'] === undefined) ? "" : contact['firstName'];
     cleanedContact['lastName'] = (contact['lastName'] === undefined) ? "" : contact['lastName'];
     cleanedContact['organization'] = (contact['organization'] === undefined) ? "" : contact['organization'];
-    cleanedContact['phoneNumbers'] = (contact['phoneNumbers'] === undefined) ? [] : contact['phoneNumebers'];
-    cleanedContact['websites'] = (contact['websites'] === undefined) ? [] : contact['websites'];
+    cleanedContact['phoneNumbers'] = (contact['phoneNumbers'] === undefined) ? [{'type': "", 'number': ""}] : contact['phoneNumbers'];
+    cleanedContact['websites'] = (contact['websites'] === undefined) ? [""] : contact['websites'];
     cleanedContact['position'] = (contact['position'] === undefined) ? "" : contact['position'];
+    cleanedContact['email'] = (contact['email'] === undefined) ? "" : contact['email'];
 
     return cleanedContact;
   }
@@ -174,8 +178,12 @@ export class UserProfileService {
 
   deleteContact(contactId: string) {
     this.userContactsReference.doc(contactId).delete()
+      .then(() => {
+        this.contactsData.delete(contactId);
+      })
       .catch(e => {
         console.log("Error deleting contact: " + e);
+        this.contactsData.delete(contactId);
       });;
   }
 

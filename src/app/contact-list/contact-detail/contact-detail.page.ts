@@ -16,15 +16,21 @@ export class ContactDetailPage {
     private userProfileService: UserProfileService,
     private router: Router,
     private alertController: AlertController,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute) {// override the route reuse strategy
+      this.router.routeReuseStrategy.shouldReuseRoute = function(){
+         return false;
+      }
+  }
 
   ngOnInit() {
     let contactId = this.route.snapshot.paramMap.get("contactId");
+ //   console.log(contactId);
     this.contactData = this.userProfileService.getContact(contactId);
+ //   console.log(this.contactData);
   }
 
   setContactInfo(data: Object) {
-    this.userProfileService.setContact(data);
+    this.userProfileService.setContact(data, this.route.snapshot.paramMap.get("contactId"));
     this.router.navigateByUrl('contact-list');
   }
 
