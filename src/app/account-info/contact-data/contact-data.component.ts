@@ -56,29 +56,6 @@ export class ContactDataComponent implements OnInit {
     } else {
       this.addWebsiteForm("");
     }
-
-    /*
-    //new user who does not have any data other then email
-    if (this.contactData['phoneNumbers'] === undefined) {
-      this.addPhoneForm("", "");
-      this.addWebsiteForm("");
-      return;
-    }
-    
-    this.addPhoneForm(this.contactData['phoneNumbers'][0]['type'], this.contactData['phoneNumbers'][0]['number']);
-    for (let i = 1; i < this.contactData['phoneNumbers'].length; i++) {
-      this.addPhoneForm(this.contactData['phoneNumbers'][i]['type'], this.contactData['phoneNumbers'][i]['number']);
-    }
-
-    this.addWebsiteForm(this.contactData['websites'][0]);
-    for (let i = 1; i < this.contactData['websites'].length; i++) {
-      this.addWebsiteForm(this.contactData['websites'][i]);
-    }
-
-     this.contactInfo.controls.firstName.setValue(this.contactData['firstName']);
-    this.contactInfo.controls.lastName.setValue(this.contactData['lastName']);
-    this.contactInfo.controls.organization.setValue(this.contactData['organization']);
-    this.contactInfo.controls.position.setValue(this.contactData['position']); */
   }
 
   addPhoneForm(type: String, number: String) {

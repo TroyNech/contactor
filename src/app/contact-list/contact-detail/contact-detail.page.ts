@@ -24,9 +24,7 @@ export class ContactDetailPage {
 
   ngOnInit() {
     let contactId = this.route.snapshot.paramMap.get("contactId");
- //   console.log(contactId);
     this.contactData = this.userProfileService.getContact(contactId);
- //   console.log(this.contactData);
   }
 
   setContactInfo(data: Object) {

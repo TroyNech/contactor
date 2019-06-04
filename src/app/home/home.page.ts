@@ -35,7 +35,6 @@ export class HomePage {
   scanCode() {
     let scannedData: Object;
     this.barcodeScanner.scan().then(barcodeData => {
-      // console.log(barcodeData.text);
       scannedData = JSON.parse(barcodeData.text);
       this.userProfileService.setContact(scannedData);
     }).then(async () => {

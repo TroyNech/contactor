@@ -155,7 +155,6 @@ export class UserProfileService {
       });
     } else {
       //else, update existing contact
-     // console.log('hi');
       this.userContactsReference.doc(<string>id).set(contact)
         .catch(e => {
           console.log("Error setting contact: " + e);

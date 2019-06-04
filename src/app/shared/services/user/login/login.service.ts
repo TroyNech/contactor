@@ -61,10 +61,8 @@ export class LoginService {
       return Promise.resolve(false);
     }
     
-    //return new Promise((resolve, reject) => resolve(true));
     if (user) return Promise.resolve(true);
     return Promise.resolve(false);
-    //return false;
 
 /*     return new Promise((resolve, reject) => {
       this.getUser().then(user => {
