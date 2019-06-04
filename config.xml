@@ -3,7 +3,7 @@
     <name>MyApp</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content original-src="index.html" src="http://192.168.0.12:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -85,7 +85,7 @@
     <plugin name="phonegap-plugin-barcodescanner" spec="8.0.1" />
     <plugin name="cordova-plugin-googleplus" spec="7.0.0">
         <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.350803372428-7n1ldbcrdp3htf7v21scgokdjbu4s713" />
-        <variable name="WEB_APPLICATION_CLIENT_ID" value="***REMOVED***" />
+        <variable name="WEB_APPLICATION_CLIENT_ID" value="NEED-NEW-KEY" />
         <variable name="PLAY_SERVICES_VERSION" value="11.8.0" />
     </plugin>
     <plugin name="cordova-plugin-buildinfo" spec="2.0.2" />
@@ -104,6 +104,5 @@
         </host>
     </universal-links>
     <preference name="AndroidLaunchMode" value="singleTask" />
-    <allow-navigation href="http://192.168.0.12:8100" sessionid="d9412892" />
     <engine name="android" spec="7.1.4" />
 </widget>

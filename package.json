@@ -87,7 +87,7 @@
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-googleplus": {
         "REVERSED_CLIENT_ID": "com.googleusercontent.apps.350803372428-7n1ldbcrdp3htf7v21scgokdjbu4s713",
-        "WEB_APPLICATION_CLIENT_ID": "***REMOVED***",
+        "WEB_APPLICATION_CLIENT_ID": "NEED-NEW-KEY",
         "PLAY_SERVICES_VERSION": "11.8.0"
       },
       "cordova-plugin-buildinfo": {},
